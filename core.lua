@@ -202,6 +202,11 @@ local function InsertOptions()
 end
 
 function Mod:OnCastbarInterrupted(castbar, unit, spellID, interruptedBy)
+    -- 【修复】：打断时强制清除施法目标文本，防止与打断者名字重叠
+    if castbar and castbar.TargetText then
+        castbar.TargetText:SetText("")
+    end
+
     local db = E.db.elvui_additionalfeature
     if not db.eAF_enableInterruptColor then return end
     if not interruptedBy then return end
