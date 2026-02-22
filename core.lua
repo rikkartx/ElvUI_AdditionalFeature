@@ -16,6 +16,10 @@ P['elvui_additionalfeature'] = {
     ['eAF_colorReactionBad'] = { r = 234/255, g = 47/255, b = 47/255 },      -- #EA2F2F
 
     ['eAF_disableAuraSweep'] = false,
+
+    -- 任务目标变色默认值
+    ['eAF_enableQuestColor'] = false,
+    ['eAF_questColor'] = { r = 255/255, g = 255/255, b = 255/255 }, -- 默认白色 #FFFFFF
 }
 
 -- 核心方法：注册文字标签
@@ -197,6 +201,30 @@ local function InsertOptions()
                     end
                 end,
             },
+
+            -- ==================== 任务目标血条颜色 ====================
+            header5 = { order = 15, type = 'header', name = L["Quest Objective Settings"] },
+            eAF_enableQuestColor = {
+                order = 16, type = 'toggle', name = L["Nameplate Quest Color"], desc = L["Change the nameplate health bar color for quest objectives."],
+                get = function(info) return E.db.elvui_additionalfeature.eAF_enableQuestColor end,
+                set = function(info, value)
+                    E.db.elvui_additionalfeature.eAF_enableQuestColor = value
+                    if NP.ConfigureAll then NP:ConfigureAll() end
+                end,
+            },
+            eAF_questColor = {
+                order = 17, type = 'color', name = L["Quest Objective Color"], desc = L["Color to use for quest objectives."], hasAlpha = false,
+                disabled = function() return not E.db.elvui_additionalfeature.eAF_enableQuestColor end,
+                get = function(info)
+                    local t = E.db.elvui_additionalfeature.eAF_questColor
+                    return t.r, t.g, t.b
+                end,
+                set = function(info, r, g, b)
+                    local t = E.db.elvui_additionalfeature.eAF_questColor
+                    t.r, t.g, t.b = r, g, b
+                    if NP.ConfigureAll then NP:ConfigureAll() end
+                end,
+            },
         },
     }
 end
@@ -236,6 +264,110 @@ function Mod:OnAuraUpdateButton(aurasMod, button, duration, expiration, modRate)
     end
 end
 
+-- ==========================================
+-- 任务目标判断辅助方法
+-- ==========================================
+function Mod:CheckQuestObjective(frame)
+    if not frame or not frame.unit then return end
+    
+    local db = E.db.elvui_additionalfeature
+    if not db.eAF_enableQuestColor then return end
+
+    local guid = UnitGUID(frame.unit)
+    if not guid then return end
+
+    local now = GetTime()
+    
+    if not frame.eAF_QuestCacheTime or frame.eAF_QuestCacheGUID ~= guid or (now - frame.eAF_QuestCacheTime > 1.0) then
+        frame.eAF_QuestCacheGUID = guid
+        frame.eAF_QuestCacheTime = now
+        frame.eAF_IsQuestObjective = false
+
+        if (frame.QuestIcons and frame.QuestIcons:IsShown()) or 
+           (frame.QuestIndicator and frame.QuestIndicator:IsShown()) or 
+           (frame.QuestIcon and frame.QuestIcon:IsShown()) then
+            frame.eAF_IsQuestObjective = true
+        else
+            local tooltipData = C_TooltipInfo.GetUnit(frame.unit)
+            if tooltipData and tooltipData.lines then
+                for _, line in ipairs(tooltipData.lines) do
+                    -- 捕捉到任务进度行
+                    if line.type == Enum.TooltipDataLineType.QuestObjective or line.type == 8 then
+                        local text = line.leftText
+                        if text then
+                            -- 解析 "1/10" 或者 " 1 / 10 " 这种字符串格式
+                            local current, max = string.match(text, "(%d+)%s*/%s*(%d+)")
+                            if current and max then
+                                -- 只有当 当前进度 < 最大进度 时，才判定为活跃的任务目标
+                                if tonumber(current) < tonumber(max) then
+                                    frame.eAF_IsQuestObjective = true
+                                    break
+                                end
+                            else
+                                -- 如果遇到的是百分比进度，比如 "50%"
+                                local percent = string.match(text, "(%d+)%%")
+                                if percent then
+                                    if tonumber(percent) < 100 then
+                                        frame.eAF_IsQuestObjective = true
+                                        break
+                                    end
+                                else
+                                    -- 如果既没有 x/y 也没有百分比（比如某些特殊文本任务），作为兜底给它染色
+                                    frame.eAF_IsQuestObjective = true
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- ==========================================
+-- 任务目标染色辅助方法
+-- ==========================================
+function Mod:ApplyQuestColor(frame)
+    if not frame or not frame.Health then return end
+    local db = E.db.elvui_additionalfeature
+    if db.eAF_enableQuestColor and frame.eAF_IsQuestObjective then
+        local color = db.eAF_questColor
+        frame.Health:SetStatusBarColor(color.r, color.g, color.b)
+    end
+end
+
+-- ==========================================
+-- Hook: 拦截血量更新颜色
+-- ==========================================
+function Mod:OnHealthUpdateColor(arg1, arg2, arg3)
+    local frame = nil
+    if type(arg1) == "table" and arg1.unit and arg1.Health then frame = arg1
+    elseif type(arg2) == "table" and arg2.unit and arg2.Health then frame = arg2
+    elseif type(arg1) == "table" and arg1.__owner and arg1.__owner.unit then frame = arg1.__owner
+    elseif type(arg2) == "table" and arg2.__owner and arg2.__owner.unit then frame = arg2.__owner end
+
+    if frame then
+        self:CheckQuestObjective(frame)
+        self:ApplyQuestColor(frame)
+    end
+end
+
+-- ==========================================
+-- Hook: 拦截仇恨更新颜色 (解决战斗闪烁的核心)
+-- ==========================================
+function Mod:OnThreatIndicatorPostUpdate(arg1, arg2, arg3)
+    local frame = nil
+    -- ThreatIndicator 的 __owner 永远是对应的 Nameplate 框架
+    if type(arg1) == "table" and arg1.__owner and arg1.__owner.unit then frame = arg1.__owner
+    elseif type(arg2) == "table" and arg2.__owner and arg2.__owner.unit then frame = arg2.__owner end
+
+    if frame then
+        self:CheckQuestObjective(frame)
+        self:ApplyQuestColor(frame)
+    end
+end
+
 function Mod:Initialize()
     InsertOptions()
 
@@ -265,6 +397,16 @@ function Mod:Initialize()
 
     if NP.Castbar_PostCastInterrupted then
         self:SecureHook(NP, "Castbar_PostCastInterrupted", "OnCastbarInterrupted")
+    end
+
+    -- Hook 姓名板血条颜色更新
+    if NP.Health_UpdateColor then
+        self:SecureHook(NP, "Health_UpdateColor", "OnHealthUpdateColor")
+    end
+
+    -- 拦截仇恨引擎，确保任务色拥有最高优先级
+    if NP.ThreatIndicator_PostUpdate then
+        self:SecureHook(NP, "ThreatIndicator_PostUpdate", "OnThreatIndicatorPostUpdate")
     end
 
     self:RegisterCustomTag()
