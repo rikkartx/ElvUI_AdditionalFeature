@@ -1,0 +1,16 @@
+## Interface: 120001
+## Title: |cff1784d1ElvUI|r Additional Feature
+## Notes: ElvUI enhancements and additional features.
+## Notes-zhCN: ElvUI 增强与附加功能合集。
+## Notes-zhTW: ElvUI 增強與附加功能合集。
+## Notes-deDE: ElvUI Erweiterungen und zusätzliche Funktionen.
+## Notes-koKR: ElvUI 향상 및 추가 기능 모음입니다.
+## Notes-ruRU: Улучшения и дополнительные функции для ElvUI.
+## Author: YourName
+## Version: 0.1.0
+## RequiredDeps: ElvUI
+## DefaultState: Enabled
+## IconTexture: Interface\AddOns\ElvUI_AdditionalFeature\Media\Textures\ElvUI_AdditionalFeatureAddonIcon.png
+
+Locales\locales.lua
+core.lua
