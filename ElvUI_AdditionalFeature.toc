@@ -7,7 +7,7 @@
 ## Notes-koKR: ElvUI 향상 및 추가 기능 모음입니다.
 ## Notes-ruRU: Улучшения и дополнительные функции для ElvUI.
 ## Author: YourName
-## Version: 0.1.1-alpha
+## Version: 0.1.1
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## IconTexture: Interface\AddOns\ElvUI_AdditionalFeature\Media\Textures\ElvUI_AdditionalFeatureAddonIcon.png

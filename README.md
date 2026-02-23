@@ -11,6 +11,8 @@ An enhancement plugin for ElvUI that adds several highly requested quality-of-li
 
 ### 🌟 Features
 
+* **Nameplate Quest Color** *(New in v0.1.1!)*
+  Highlights quest mobs! Easily identify your current quest objectives by overriding their nameplate health bar with a custom color of your choice. Features smart tracking that automatically reverts the color once the objective (e.g., 10/10 killed) is completed. *(Note: To comply with Blizzard's instance API restrictions, this feature is active in the open world only).*
 * **Force Solo Threat Color**
   Forces the Nameplate "Solo Threat Color" to apply even when you are in a party or raid group.
 * **Nameplate Interrupt Color**
@@ -36,6 +38,8 @@ An enhancement plugin for ElvUI that adds several highly requested quality-of-li
 
 ### 🌟 功能特性
 
+* **任务目标姓名板变色** *(v0.1.1 新功能！)*
+  让任务怪无处遁形！强制覆盖属于你当前任务目标的小怪血条颜色。带有智能进度追踪功能，当你完成该怪物的击杀需求（例如 10/10）后，血条会自动恢复为原本的颜色。（*注：为规避暴雪副本内 API 限制，此功能仅在野外生效*）。
 * **强制单人仇恨颜色**
   强制姓名板使用“单人仇恨颜色”，即使你当前处于小队或团队中也会生效。
 * **姓名板打断变色**
