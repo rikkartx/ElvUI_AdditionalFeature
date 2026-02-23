@@ -12,5 +12,22 @@
 ## DefaultState: Enabled
 ## IconTexture: Interface\AddOns\ElvUI_AdditionalFeature\Media\Textures\ElvUI_AdditionalFeatureAddonIcon.png
 
-Locales\locales.lua
+# 多语言加载 (默认英文垫底，其他语言覆盖)
+Locales\eAF_locale_enUS.lua
+Locales\eAF_locale_zhCN.lua
+Locales\eAF_locale_zhTW.lua
+Locales\eAF_locale_deDE.lua
+Locales\eAF_locale_frFR.lua
+Locales\eAF_locale_ruRU.lua
+Locales\eAF_locale_koKR.lua
+Locales\eAF_locale_esES.lua
+Locales\eAF_locale_ptBR.lua
+Locales\eAF_locale_itIT.lua
+
+# 核心文件
 core.lua
+
+# 功能模块
+Tag\eAF_tag.lua
+Aura\eAF_aura.lua
+Nameplate\eAF_nameplate.lua
