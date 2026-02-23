@@ -45,15 +45,34 @@ function Mod:CheckQuestObjective(frame)
     local db = E.db.elvui_additionalfeature
     if not db.eAF_enableQuestColor then return end
 
+    -- 【新增】：副本环境检测
+    local inInstance = IsInInstance()
+    if inInstance and not db.eAF_enableQuestColorInInstance then
+        -- 如果在副本内且没有开启强制检测，直接清理掉该姓名板可能遗留的染色状态并退出
+        frame.eAF_IsQuestObjective = false
+        return
+    end
+
     local guid = UnitGUID(frame.unit)
     if not guid then return end
 
     local now = GetTime()
-    
+
     -- 【缓存机制】：1秒内同 GUID 的目标不再重复扫描 Tooltip，极大节省 CPU 性能
-    if not frame.eAF_QuestCacheTime or frame.eAF_QuestCacheGUID ~= guid or (now - frame.eAF_QuestCacheTime > 1.0) then
-        frame.eAF_QuestCacheGUID = guid
-        frame.eAF_QuestCacheTime = now
+    local useCache = false
+    if not inInstance then
+        if frame.eAF_QuestCacheTime and frame.eAF_QuestCacheGUID == guid and (now - frame.eAF_QuestCacheTime <= 1.0) then
+            useCache = true
+        end
+    end
+
+    if not useCache then
+        -- 只在非副本环境下更新缓存数据
+        if not inInstance then
+            frame.eAF_QuestCacheGUID = guid
+            frame.eAF_QuestCacheTime = now
+        end
+
         frame.eAF_IsQuestObjective = false
 
         -- 【判断层级 A】：检查 ElvUI 原生的任务图标系统 (极快)

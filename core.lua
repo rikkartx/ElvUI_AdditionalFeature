@@ -30,7 +30,8 @@ P['elvui_additionalfeature'] = {
 
     -- [5] 任务目标姓名板变色
     ['eAF_enableQuestColor'] = false,
-    ['eAF_questColor'] = { r = 255/255, g = 165/255, b = 0/255 },            -- 默认橘黄色 #FFA500
+    ['eAF_enableQuestColorInInstance'] = false,
+    ['eAF_questColor'] = { r = 255/255, g = 255/255, b = 255/255 },            -- 默认白色 #FFFFFF
 }
 
 -- ==========================================
@@ -144,6 +145,15 @@ local function InsertOptions()
                 get = function(info) return E.db.elvui_additionalfeature.eAF_enableQuestColor end,
                 set = function(info, value)
                     E.db.elvui_additionalfeature.eAF_enableQuestColor = value
+                    if NP.ConfigureAll then NP:ConfigureAll() end
+                end,
+            },
+            eAF_enableQuestColorInInstance = {
+                order = 17, type = 'toggle', name = L["Enable in Instances (may cause performance issues)"], desc = L["ENABLE_QUEST_COLOR_IN_INSTANCE_DESC"],
+                disabled = function() return not E.db.elvui_additionalfeature.eAF_enableQuestColor end,
+                get = function(info) return E.db.elvui_additionalfeature.eAF_enableQuestColorInInstance end,
+                set = function(info, value)
+                    E.db.elvui_additionalfeature.eAF_enableQuestColorInInstance = value
                     if NP.ConfigureAll then NP:ConfigureAll() end
                 end,
             },
