@@ -4,6 +4,36 @@
 
 ---
 
+## [0.1.1] - Quest Highlighting & Modularization
+
+### English
+
+#### Added
+- **Nameplate Quest Color**: Added a new feature to change the health bar color of quest objectives. (Active in the open world only to prevent API restriction errors inside instances).
+- **Smart Quest Tracking**: Implemented regex parsing for Tooltips. The addon now intelligently stops coloring mobs once their specific quest requirement (e.g., "10/10" or "100%") is fulfilled.
+- **Modular Codebase**: Refactored the entire addon into separate, easily maintainable modules (`Aura`, `Nameplate`, `Tag`, `Locales`).
+- **Locales**: Added fully translated, dedicated locale files for `deDE`, `esES`, `frFR`, `itIT`, `koKR`, `ptBR`, and `ruRU`.
+
+#### Fixed
+- **Text Overlap Bug**: Fixed an ElvUI native visual bug where the target's name (`TargetText`) would overlap with the interrupter's name (`[Interrupted by Player]`) on the castbar upon a successful interrupt. The target's name is now correctly hidden.
+- **API Compliance**: Removed legacy combat log hooks to comply with Blizzard's WoW 12.0.0+ API restrictions. Interrupt colors now work reliably without depending on combat log interrupter data.
+
+---
+
+### 简体中文
+
+#### 新增
+- **任务目标变色**：新增功能，可将属于当前任务目标的小怪姓名板血条强制修改为自定义颜色。（仅在野外生效，进入副本自动禁用以规避暴雪 API 限制）。
+- **智能任务进度追踪**：引入了正则表达式解析 Tooltip 进度。当特定小怪的击杀/收集需求达成时（如 "10/10" 或 "100%"），插件会自动停止染色，恢复其原本颜色。
+- **代码重构**：将臃肿的单文件重构为模块化结构，拆分出光环 (`Aura`)、姓名板 (`Nameplate`)、标签 (`Tag`) 和多语言 (`Locales`) 独立模块，极大提升运行效率和代码可维护性。
+- **多语言扩展**：新增并完善了德语、西班牙语、法语、意大利语、韩语、葡萄牙语和俄语的独立本地化翻译文件。
+
+#### 修复
+- **文本重叠 Bug**：修复了施法被打断时，施法条上的目标文本（`TargetText`）与打断者名字（`[被 xxx 打断]`）发生重叠的视觉错误。打断发生时目标文本现已被强制隐藏。
+- **12.0 API 适配**：移除了过时的战斗日志监听，全面适配 12.0.0+ 严格 API。打断变色功能不再因获取不到打断者信息而失效。
+
+---
+
 ## [0.1.0] - Initial Release
 
 ### English

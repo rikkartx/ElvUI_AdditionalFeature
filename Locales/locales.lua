@@ -27,6 +27,12 @@ L["Auras Settings"] = "Auras Settings"
 L["Disable Aura Sweep"] = "Disable Aura Sweep"
 L["DISABLE_AURA_SWEEP_DESC"] = "Forces the sweep (cooldown animation) on player auras (buffs/debuffs) to be hidden.\n\nOnly the cooldown numbers will remain."
 L["Custom reaction color from Additional Feature plugin."] = "Custom reaction color from Additional Feature plugin."
+-- 新增：任务目标颜色
+L["Quest Objective Settings"] = "Quest Objective Settings"
+L["Nameplate Quest Color"] = "Nameplate Quest Color"
+L["Change the nameplate health bar color for quest objectives."] = "Change the nameplate health bar color for quest objectives."
+L["Quest Objective Color"] = "Quest Objective Color"
+L["Color to use for quest objectives."] = "Color to use for quest objectives."
 
 -- ==========================================
 -- 客户端语言覆盖
@@ -55,6 +61,12 @@ if locale == "zhCN" then
     L["DISABLE_AURA_SWEEP_DESC"] = "开启后，强制关闭右上角玩家 Buff 和 Debuff 上的黑边倒计时转圈动画（Swipe）。\n\n开启此项可彻底将黑边隐藏，仅保留清晰的倒计时数字。"
     L["Custom reaction color from Additional Feature plugin."] = "基于 Additional Feature 插件的自定义声望颜色。"
 
+    L["Quest Objective Settings"] = "任务目标设置"
+    L["Nameplate Quest Color"] = "任务目标姓名板变色"
+    L["Change the nameplate health bar color for quest objectives."] = "开启后，属于当前任务目标的小怪姓名板血条会变成指定颜色。"
+    L["Quest Objective Color"] = "任务目标颜色"
+    L["Color to use for quest objectives."] = "属于任务目标的小怪的血条颜色。"
+
 elseif locale == "zhTW" then
     L["Additional Feature"] = "附加功能"
     L["Force Solo Threat Color"] = "強制單人仇恨顏色設置"
@@ -79,6 +91,12 @@ elseif locale == "zhTW" then
     L["DISABLE_AURA_SWEEP_DESC"] = "開啟後，強制關閉右上角玩家 Buff 和 Debuff 上的黑邊倒計時轉圈動畫（Swipe）。\n\n開啟此項可徹底將黑邊隱藏，僅保留清晰的倒計時數字。"
     L["Custom reaction color from Additional Feature plugin."] = "基於 Additional Feature 插件的自定義聲望顏色。"
 
+    L["Quest Objective Settings"] = "任務目標設置"
+    L["Nameplate Quest Color"] = "任務目標姓名板變色"
+    L["Change the nameplate health bar color for quest objectives."] = "開啟後，屬於當前任務目標的小怪姓名板血條會變成指定顏色。"
+    L["Quest Objective Color"] = "任務目標顏色"
+    L["Color to use for quest objectives."] = "屬於任務目標的小怪的血條顏色。"
+    
 elseif locale == "deDE" then
     L["Additional Feature"] = "Zusätzliche Funktionen"
     L["Force Solo Threat Color"] = "Solo-Bedrohungsfarbe erzwingen"
@@ -102,6 +120,12 @@ elseif locale == "deDE" then
     L["Disable Aura Sweep"] = "Auren-Animation deaktivieren"
     L["DISABLE_AURA_SWEEP_DESC"] = "Verbirgt die Abklingzeit-Animation (Sweep) auf Spieler-Auren, nur Zahlen bleiben sichtbar."
 
+    L["Quest Objective Settings"] = "Quest-Ziel-Einstellungen"
+    L["Nameplate Quest Color"] = "Namensplaketten Quest-Farbe"
+    L["Change the nameplate health bar color for quest objectives."] = "Ändert die Farbe der Gesundheitsleiste für Quest-Ziele."
+    L["Quest Objective Color"] = "Quest-Ziel-Farbe"
+    L["Color to use for quest objectives."] = "Farbe für Quest-Ziele."
+
 elseif locale == "frFR" then
     L["Additional Feature"] = "Fonctionnalités Supplémentaires"
     L["Force Solo Threat Color"] = "Forcer la couleur de menace solo"
@@ -123,6 +147,12 @@ elseif locale == "frFR" then
     L["Auras Settings"] = "Paramètres des Auras"
     L["Disable Aura Sweep"] = "Désactiver l'animation des Auras"
     L["DISABLE_AURA_SWEEP_DESC"] = "Masque l'animation de recharge (sweep) sur les auras du joueur."
+
+    L["Quest Objective Settings"] = "Paramètres d'Objectif de Quête"
+    L["Nameplate Quest Color"] = "Couleur de Quête (Plates d'ident.)"
+    L["Change the nameplate health bar color for quest objectives."] = "Change la couleur de la barre de vie pour les objectifs de quête."
+    L["Quest Objective Color"] = "Couleur d'Objectif de Quête"
+    L["Color to use for quest objectives."] = "Couleur à utiliser pour les objectifs de quête."
 
 elseif locale == "ruRU" then
     L["Additional Feature"] = "Дополнительные функции"
@@ -147,6 +177,12 @@ elseif locale == "ruRU" then
     L["Disable Aura Sweep"] = "Отключить анимацию аур"
     L["DISABLE_AURA_SWEEP_DESC"] = "Скрывает анимацию перезарядки (затмение) на аурах игрока, оставляя только цифры."
 
+    L["Quest Objective Settings"] = "Настройки целей заданий"
+    L["Nameplate Quest Color"] = "Цвет целей заданий"
+    L["Change the nameplate health bar color for quest objectives."] = "Изменить цвет полосы здоровья для целей заданий."
+    L["Quest Objective Color"] = "Цвет цели задания"
+    L["Color to use for quest objectives."] = "Цвет для целей заданий."
+
 elseif locale == "koKR" then
     L["Additional Feature"] = "추가 기능"
     L["Force Solo Threat Color"] = "솔로 위협 색상 강제"
@@ -167,6 +203,12 @@ elseif locale == "koKR" then
     L["Auras Settings"] = "효과(오라) 설정"
     L["Disable Aura Sweep"] = "오라 재사용 대기시간 애니메이션 비활성화"
     L["DISABLE_AURA_SWEEP_DESC"] = "플레이어 오라의 재사용 대기시간 애니메이션(어두운 회전 효과)을 숨깁니다."
+
+    L["Quest Objective Settings"] = "퀘스트 목표 설정"
+    L["Nameplate Quest Color"] = "이름표 퀘스트 색상"
+    L["Change the nameplate health bar color for quest objectives."] = "퀘스트 목표의 이름표 체력바 색상을 변경합니다."
+    L["Quest Objective Color"] = "퀘스트 목표 색상"
+    L["Color to use for quest objectives."] = "퀘스트 목표에 사용할 색상입니다."
 
 elseif locale == "esES" or locale == "esMX" then
     L["Additional Feature"] = "Características Adicionales"
@@ -189,6 +231,12 @@ elseif locale == "esES" or locale == "esMX" then
     L["Disable Aura Sweep"] = "Desactivar animación de auras"
     L["DISABLE_AURA_SWEEP_DESC"] = "Oculta la animación de tiempo de reutilización en las auras del jugador."
 
+    L["Quest Objective Settings"] = "Ajustes de Objetivo de Misión"
+    L["Nameplate Quest Color"] = "Color de Misión en Placas"
+    L["Change the nameplate health bar color for quest objectives."] = "Cambia el color de la barra de salud para los objetivos de misión."
+    L["Quest Objective Color"] = "Color de Objetivo de Misión"
+    L["Color to use for quest objectives."] = "Color a usar para los objetivos de misión."
+
 elseif locale == "ptBR" then
     L["Additional Feature"] = "Recursos Adicionais"
     L["Force Solo Threat Color"] = "Forçar Cor de Ameaça Solo"
@@ -210,6 +258,12 @@ elseif locale == "ptBR" then
     L["Disable Aura Sweep"] = "Desativar Animação de Auras"
     L["DISABLE_AURA_SWEEP_DESC"] = "Oculta a animação de recarga nas auras do jogador."
 
+    L["Quest Objective Settings"] = "Configurações de Objetivo de Missão"
+    L["Nameplate Quest Color"] = "Cor de Missão nas Placas"
+    L["Change the nameplate health bar color for quest objectives."] = "Muda a cor da barra de vida para os objetivos de missão."
+    L["Quest Objective Color"] = "Cor de Objetivo de Missão"
+    L["Color to use for quest objectives."] = "Cor a ser usada para objetivos de missão."
+
 elseif locale == "itIT" then
     L["Additional Feature"] = "Funzionalità Aggiuntive"
     L["Force Solo Threat Color"] = "Forza Colore Minaccia in Solitaria"
@@ -230,4 +284,11 @@ elseif locale == "itIT" then
     L["Auras Settings"] = "Impostazioni Aure"
     L["Disable Aura Sweep"] = "Disabilita Animazione Aure"
     L["DISABLE_AURA_SWEEP_DESC"] = "Nasconde l'animazione di ricarica sulle aure del giocatore."
+
+    L["Quest Objective Settings"] = "Impostazioni Obiettivo Missione"
+    L["Nameplate Quest Color"] = "Colore Missione Targhette"
+    L["Change the nameplate health bar color for quest objectives."] = "Cambia il colore della barra della salute per gli obiettivi della missione."
+    L["Quest Objective Color"] = "Colore Obiettivo Missione"
+    L["Color to use for quest objectives."] = "Colore da usare per gli obiettivi della missione."
+
 end
