@@ -172,6 +172,39 @@ function Mod:OnThreatIndicatorPostUpdate(arg1, arg2, arg3)
 end
 
 -- ==========================================
+-- 【新增】：防弹级透明度修改拦截器
+-- ==========================================
+function Mod:ApplyDifficultyAlpha(frame)
+    if not frame then return end
+    local db = E.db.elvui_additionalfeature
+    local alpha = db.eAF_difficultyColorAlpha
+    if not alpha then return end
+
+    -- 方案 A: 降维打击 - 遍历 oUF 底层的标签文本注册表
+    -- 只要文字的内容含有 difficultycolor、smartlevel 或 level 标签，强行改透明度
+    if frame.__tags then
+        for fontString, tagStr in pairs(frame.__tags) do
+            if type(tagStr) == "string" and (string.find(tagStr, "difficultycolor") or string.find(tagStr, "smartlevel") or string.find(tagStr, "level")) then
+                fontString:SetAlpha(alpha)
+            end
+        end
+    end
+
+    -- 方案 B: 穷举 ElvUI 各版本可能的 Level 控件命名
+    if frame.Level then frame.Level:SetAlpha(alpha) end
+    if frame.LevelText then frame.LevelText:SetAlpha(alpha) end
+    if frame.tags and frame.tags.Level then frame.tags.Level:SetAlpha(alpha) end
+    if frame.TagTexts and frame.TagTexts.Level then frame.TagTexts.Level:SetAlpha(alpha) end
+end
+
+-- 挂载到底层的 NamePlateCallBack：当姓名板出现时触发
+function Mod:OnNamePlateCallBack(np_module, frame, event, unit)
+    if event == "NAME_PLATE_UNIT_ADDED" then
+        self:ApplyDifficultyAlpha(frame)
+    end
+end
+
+-- ==========================================
 -- 模块初始化：向 ElvUI 原生事件注入我们的逻辑
 -- ==========================================
 function Mod:InitializeNameplate()
@@ -214,5 +247,20 @@ function Mod:InitializeNameplate()
     -- 4. Hook 仇恨颜色更新（用于确立任务色的绝对优先级）
     if NP.ThreatIndicator_PostUpdate then
         self:SecureHook(NP, "ThreatIndicator_PostUpdate", "OnThreatIndicatorPostUpdate")
+    end
+
+    -- 5. Hook 挂载底层姓名板加载事件和标签刷新事件
+    if NP.NamePlateCallBack then
+        self:SecureHook(NP, "NamePlateCallBack", "OnNamePlateCallBack")
+    end
+
+    -- 拦截 ElvUI 可能刷新标签文本的生命周期，防止设置被重置覆盖
+    local tagMethods = { "Update_Tags", "Configure_Tags", "Construct_TagText", "UpdateTags" }
+    for _, method in ipairs(tagMethods) do
+        if NP[method] then
+            self:SecureHook(NP, method, function(self_np, frame)
+                Mod:ApplyDifficultyAlpha(frame)
+            end)
+        end
     end
 end
