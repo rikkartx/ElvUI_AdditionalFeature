@@ -20,6 +20,8 @@ P['elvui_additionalfeature'] = {
     -- 姓名板相关
     ['eAF_enableTargetColor'] = false,                                         
     ['eAF_targetColor'] = { r = 75, g = 189, b = 235 }, -- #4BBDEB
+    ['eAF_enableFocusColor'] = false, 
+    ['eAF_focusColor'] = { r = 57, g = 140, b = 173 }, -- #398CAD
     ['eAF_showTheatSoloColor'] = false,
     ['eAF_enableInterruptColor'] = false,
     ['eAF_forceInterruptColor'] = false,
@@ -76,6 +78,23 @@ local function InsertOptions()
                         disabled = function() return not E.db.elvui_additionalfeature.eAF_enableTargetColor end,
                         get = function(info) local t = E.db.elvui_additionalfeature.eAF_targetColor; return t.r, t.g, t.b end,
                         set = function(info, r, g, b) local t = E.db.elvui_additionalfeature.eAF_targetColor; t.r, t.g, t.b = r, g, b; if NP.ConfigureAll then NP:ConfigureAll() end; end,
+                    },
+
+                    -- [新增] 小标题：焦点目标颜色设置
+                    header_focus = { order = getOrder(), type = 'header', name = L["Focus Nameplate Color"] or "Focus Nameplate Color" },
+                    eAF_enableFocusColor = {
+                        order = getOrder(), type = 'toggle', name = L["Enable Focus Color"] or "Enable Focus Color", desc = L["Change the nameplate health bar color for your focus target."] or "Change the nameplate health bar color for your focus target.",
+                        get = function(info) return E.db.elvui_additionalfeature.eAF_enableFocusColor end,
+                        set = function(info, value)
+                            E.db.elvui_additionalfeature.eAF_enableFocusColor = value
+                            if NP.ConfigureAll then NP:ConfigureAll() end
+                        end,
+                    },
+                    eAF_focusColor = {
+                        order = getOrder(), type = 'color', name = L["Focus Color"] or "Focus Color", desc = L["Color to use for your focus target."] or "Color to use for your focus target.", hasAlpha = false,
+                        disabled = function() return not E.db.elvui_additionalfeature.eAF_enableFocusColor end,
+                        get = function(info) local t = E.db.elvui_additionalfeature.eAF_focusColor; return t.r, t.g, t.b end,
+                        set = function(info, r, g, b) local t = E.db.elvui_additionalfeature.eAF_focusColor; t.r, t.g, t.b = r, g, b; if NP.ConfigureAll then NP:ConfigureAll() end; end,
                     },
                     
                     -- 小标题：强制单人仇恨颜色设置

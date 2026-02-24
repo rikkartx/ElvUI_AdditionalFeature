@@ -83,7 +83,7 @@ function Mod:CheckQuestObjective(frame)
 end
 
 -- ==========================================
--- 渲染逻辑：统一处理所有覆盖染色 (确立绝对优先级)
+-- 渲染逻辑：统一处理所有覆盖染色 (优先级枢纽)
 -- ==========================================
 function Mod:ApplyNameplateColorOverride(frame)
     if not frame or not frame.Health or not frame.unit then return end
@@ -94,18 +94,23 @@ function Mod:ApplyNameplateColorOverride(frame)
     if db.eAF_enableTargetColor and UnitIsUnit(frame.unit, "target") then
         local color = db.eAF_targetColor
         frame.Health:SetStatusBarColor(color.r, color.g, color.b)
-        return -- 命中后直接 return，阻断后续低优先级的覆盖
+        return
     end
 
-    -- 【优先级 2：任务目标染色】
+    -- 【优先级 2：焦点目标染色】
+    if db.eAF_enableFocusColor and UnitIsUnit(frame.unit, "focus") then
+        local color = db.eAF_focusColor
+        frame.Health:SetStatusBarColor(color.r, color.g, color.b)
+        return 
+    end
+
+    -- 【优先级 3：任务目标染色】
+    self:CheckQuestObjective(frame)
     if db.eAF_enableQuestColor and frame.eAF_IsQuestObjective then
         local color = db.eAF_questColor
         frame.Health:SetStatusBarColor(color.r, color.g, color.b)
-        return -- 命中后直接 return
+        return
     end
-    
-    -- 如果前面都没有 return，说明既不是目标也不是任务怪。
-    -- ElvUI 此时已经赋予了原生颜色（仇恨或默认阵营色），我们什么都不做，直接放行即可。
 end
 
 -- ==========================================
@@ -147,6 +152,16 @@ function Mod:OnPlayerTargetChanged()
     end
 end
 
+function Mod:OnPlayerFocusChanged()
+    if NP.Plates then
+        for frame in pairs(NP.Plates) do
+            if frame:IsShown() and frame.unit and frame.Health then
+                frame:UpdateAllElements('eAF_OnPlayerFocusChanged_Refresh')
+            end
+        end
+    end
+end
+
 -- ==========================================
 -- 透明度修改拦截器
 -- ==========================================
@@ -182,6 +197,7 @@ end
 function Mod:InitializeNameplate()
     -- 0. 注册原生目标切换事件
     self:RegisterEvent("PLAYER_TARGET_CHANGED", "OnPlayerTargetChanged")
+    self:RegisterEvent("PLAYER_FOCUS_CHANGED", "OnPlayerFocusChanged")
 
     -- 1. Hook 强制单人仇恨
     local orig_ThreatIndicator_PreUpdate = NP.ThreatIndicator_PreUpdate
