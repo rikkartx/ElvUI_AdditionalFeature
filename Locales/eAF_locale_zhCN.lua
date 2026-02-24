@@ -1,6 +1,9 @@
 local E, L = unpack(ElvUI)
 if GetLocale() ~= "zhCN" then return end
 
+L["NamePlates"] = "姓名板"
+L["Auras"] = "光环"
+L["Custom Tags"] = "自定义标签"
 L["Additional Feature"] = "AdditionalFeature"
 L["Force Solo Threat Color"] = "强制单人仇恨颜色设置"
 L["Enable Solo Threat Color"] = "启用 Solo 仇恨颜色"
