@@ -35,3 +35,9 @@ L["Enable in Instances (may cause performance issues)"] = "副本内启用 (可�
 L["ENABLE_QUEST_COLOR_IN_INSTANCE_DESC"] = "开启此项会在副本内强制每次刷新时重新扫描，可能会在多怪AOE时引起掉帧。关闭此项则在进入副本后自动禁用任务染色。"
 L["Nameplate Level Text Alpha"] = "姓名板等级文本透明度"
 L["Adjust the transparency of the nameplate level text object."] = "调整姓名板上“等级”文本控件的全局透明度。\n（注：魔兽世界原生渲染不支持透明度标签，此功能直接作用于底层 UI 控件上）"
+-- 目标染色设置
+L["Target Nameplate Color"] = "当前目标颜色设置"
+L["Enable Target Color"] = "启用当前目标变色"
+L["Change the nameplate health bar color for the current target."] = "开启后，你当前选中的目标姓名板血条会变成指定的颜色。"
+L["Target Color"] = "当前目标颜色"
+L["Color to use for the current target."] = "设定你当前选中目标的血条颜色。"

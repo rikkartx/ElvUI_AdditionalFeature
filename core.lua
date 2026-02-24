@@ -18,6 +18,8 @@ end
 -- ==========================================
 P['elvui_additionalfeature'] = {
     -- 姓名板相关
+    ['eAF_enableTargetColor'] = false,                                         
+    ['eAF_targetColor'] = { r = 75, g = 189, b = 235 }, -- #4BBDEB
     ['eAF_showTheatSoloColor'] = false,
     ['eAF_enableInterruptColor'] = false,
     ['eAF_forceInterruptColor'] = false,
@@ -59,6 +61,23 @@ local function InsertOptions()
                 type = 'group',
                 name = L["NamePlates"] or "NamePlates",
                 args = {
+                    -- [新增] 小标题：当前目标颜色设置
+                    header_target = { order = getOrder(), type = 'header', name = L["Target Nameplate Color"] or "Target Nameplate Color" },
+                    eAF_enableTargetColor = {
+                        order = getOrder(), type = 'toggle', name = L["Enable Target Color"] or "Enable Target Color", desc = L["Change the nameplate health bar color for the current target."] or "Change the nameplate health bar color for the current target.",
+                        get = function(info) return E.db.elvui_additionalfeature.eAF_enableTargetColor end,
+                        set = function(info, value)
+                            E.db.elvui_additionalfeature.eAF_enableTargetColor = value
+                            if NP.ConfigureAll then NP:ConfigureAll() end
+                        end,
+                    },
+                    eAF_targetColor = {
+                        order = getOrder(), type = 'color', name = L["Target Color"] or "Target Color", desc = L["Color to use for the current target."] or "Color to use for the current target.", hasAlpha = false,
+                        disabled = function() return not E.db.elvui_additionalfeature.eAF_enableTargetColor end,
+                        get = function(info) local t = E.db.elvui_additionalfeature.eAF_targetColor; return t.r, t.g, t.b end,
+                        set = function(info, r, g, b) local t = E.db.elvui_additionalfeature.eAF_targetColor; t.r, t.g, t.b = r, g, b; if NP.ConfigureAll then NP:ConfigureAll() end; end,
+                    },
+                    
                     -- 小标题：强制单人仇恨颜色设置
                     header_threat = { order = getOrder(), type = 'header', name = L["Force Solo Threat Color"] },
                     eAF_showTheatSoloColor = {
