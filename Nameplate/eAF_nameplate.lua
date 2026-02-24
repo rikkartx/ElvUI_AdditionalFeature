@@ -37,7 +37,7 @@ function Mod:OnCastbarInterrupted(castbar, unit, spellID, interruptedBy)
 end
 
 -- ==========================================
--- 模块 2：任务目标判断 (带智能缓存与正则解析)
+-- 模块 2：任务目标判断 (带正则解析)
 -- ==========================================
 function Mod:CheckQuestObjective(frame)
     if not frame or not frame.unit then return end
@@ -53,65 +53,44 @@ function Mod:CheckQuestObjective(frame)
         return
     end
 
-    local guid = UnitGUID(frame.unit)
-    if not guid then return end
+    frame.eAF_IsQuestObjective = false
 
-    local now = GetTime()
-
-    -- 【缓存机制】：1秒内同 GUID 的目标不再重复扫描 Tooltip，极大节省 CPU 性能
-    local useCache = false
-    if not inInstance then
-        if frame.eAF_QuestCacheTime and frame.eAF_QuestCacheGUID == guid and (now - frame.eAF_QuestCacheTime <= 1.0) then
-            useCache = true
-        end
-    end
-
-    if not useCache then
-        -- 只在非副本环境下更新缓存数据
-        if not inInstance then
-            frame.eAF_QuestCacheGUID = guid
-            frame.eAF_QuestCacheTime = now
-        end
-
-        frame.eAF_IsQuestObjective = false
-
-        -- 【判断层级 A】：检查 ElvUI 原生的任务图标系统 (极快)
-        -- 注意：原生的图标在目标未被选中时可能会被隐藏，因此我们需要 B 计划兜底。
-        if (frame.QuestIcons and frame.QuestIcons:IsShown()) or 
-           (frame.QuestIndicator and frame.QuestIndicator:IsShown()) or 
-           (frame.QuestIcon and frame.QuestIcon:IsShown()) then
-            frame.eAF_IsQuestObjective = true
-        else
-            -- 【判断层级 B】：深度解析底层 Tooltip (慢，但 100% 绝对精准，已受控于缓存)
-            local tooltipData = C_TooltipInfo.GetUnit(frame.unit)
-            if tooltipData and tooltipData.lines then
-                for _, line in ipairs(tooltipData.lines) do
-                    -- 匹配任务目标 Enum (常规值为 8)
-                    if line.type == Enum.TooltipDataLineType.QuestObjective or line.type == 8 then
-                        local text = line.leftText
-                        if text then
-                            -- 【智能进度追踪】：正则表达式解析 "已击杀: 5/10" 格式
-                            -- (%d+) 匹配数字，%s* 匹配任意空格，/ 匹配斜杠
-                            local current, max = string.match(text, "(%d+)%s*/%s*(%d+)")
-                            if current and max then
-                                -- 核心逻辑：只有当前击杀数 < 需求总数时，才继续判定为任务怪
-                                if tonumber(current) < tonumber(max) then
+    -- 【判断层级 A】：检查 ElvUI 原生的任务图标系统 (极快)
+    -- 注意：原生的图标在目标未被选中时可能会被隐藏，因此我们需要 B 计划兜底。
+    if (frame.QuestIcons and frame.QuestIcons:IsShown()) or 
+       (frame.QuestIndicator and frame.QuestIndicator:IsShown()) or 
+       (frame.QuestIcon and frame.QuestIcon:IsShown()) then
+        frame.eAF_IsQuestObjective = true
+    else
+        -- 【判断层级 B】：深度解析底层 Tooltip (慢，但 100% 绝对精准)
+        local tooltipData = C_TooltipInfo.GetUnit(frame.unit)
+        if tooltipData and tooltipData.lines then
+            for _, line in ipairs(tooltipData.lines) do
+                -- 匹配任务目标 Enum (常规值为 8)
+                if line.type == Enum.TooltipDataLineType.QuestObjective or line.type == 8 then
+                    local text = line.leftText
+                    if text then
+                        -- 【智能进度追踪】：正则表达式解析 "已击杀: 5/10" 格式
+                        -- (%d+) 匹配数字，%s* 匹配任意空格，/ 匹配斜杠
+                        local current, max = string.match(text, "(%d+)%s*/%s*(%d+)")
+                        if current and max then
+                            -- 核心逻辑：只有当前击杀数 < 需求总数时，才继续判定为任务怪
+                            if tonumber(current) < tonumber(max) then
+                                frame.eAF_IsQuestObjective = true
+                                break
+                            end
+                        else
+                            -- 解析百分比格式任务，例如 "进度: 50%"
+                            local percent = string.match(text, "(%d+)%%")
+                            if percent then
+                                if tonumber(percent) < 100 then
                                     frame.eAF_IsQuestObjective = true
                                     break
                                 end
                             else
-                                -- 解析百分比格式任务，例如 "进度: 50%"
-                                local percent = string.match(text, "(%d+)%%")
-                                if percent then
-                                    if tonumber(percent) < 100 then
-                                        frame.eAF_IsQuestObjective = true
-                                        break
-                                    end
-                                else
-                                    -- 如果既没有 x/y 也没有 %，说明是特殊任务（如仅仅是一段文字描述），直接染色
-                                    frame.eAF_IsQuestObjective = true
-                                    break
-                                end
+                                -- 如果既没有 x/y 也没有 %，说明是特殊任务（如仅仅是一段文字描述），直接染色
+                                frame.eAF_IsQuestObjective = true
+                                break
                             end
                         end
                     end
