@@ -22,6 +22,7 @@ P['elvui_additionalfeature'] = {
     ['eAF_enableInterruptColor'] = false,
     ['eAF_forceInterruptColor'] = false,
     ['eAF_interruptColor'] = { r = 199/255, g = 64/255, b = 64/255, a = 1 }, -- #C74040
+    ['eAF_difficultyColorAlpha'] = 1.0,
     ['eAF_enableQuestColor'] = false,
     ['eAF_enableQuestColorInInstance'] = false,
     ['eAF_questColor'] = { r = 255/255, g = 255/255, b = 255/255 },            -- #FFFFFF
@@ -87,6 +88,33 @@ local function InsertOptions()
                         disabled = function() return not E.db.elvui_additionalfeature.eAF_enableInterruptColor end,
                         get = function(info) local t = E.db.elvui_additionalfeature.eAF_interruptColor; return t.r, t.g, t.b, t.a end,
                         set = function(info, r, g, b, a) local t = E.db.elvui_additionalfeature.eAF_interruptColor; t.r, t.g, t.b, t.a = r, g, b, a end,
+                    },
+
+                    -- 小标题：等级颜色透明度
+                    header_alpha = { order = getOrder(), type = 'header', name = L["Nameplate Level Text Alpha"] or "Level Text Alpha" },
+                    eAF_difficultyColorAlpha = {
+                        order = getOrder(), type = 'range', name = L["Nameplate Level Text Alpha"] or "Level Text Alpha", desc = L["Adjust the transparency of the nameplate level text object."],
+                        min = 0, max = 1, step = 0.05, isPercent = true,
+                        get = function(info) return E.db.elvui_additionalfeature.eAF_difficultyColorAlpha end,
+                        set = function(info, value)
+                            E.db.elvui_additionalfeature.eAF_difficultyColorAlpha = value
+                            
+                            -- 【修复】：直接遍历修改透明度，并强制 oUF 引擎重绘标签！
+                            if NP.CreatedPlates then
+                                for nameplate in pairs(NP.CreatedPlates) do
+                                    if Mod.ApplyDifficultyAlpha then 
+                                        Mod:ApplyDifficultyAlpha(nameplate) 
+                                    end
+                                    -- 强行踢一脚渲染引擎，让透明度在拖动滑块时瞬间生效
+                                    if nameplate.UpdateTags then
+                                        nameplate:UpdateTags()
+                                    end
+                                end
+                            end
+                            
+                            -- 兜底全局重配
+                            if NP.ConfigureAll then NP:ConfigureAll() end
+                        end,
                     },
 
                     -- 小标题：任务目标颜色设置
