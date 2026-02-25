@@ -2,7 +2,9 @@
 
 # ElvUI Additional Feature
 
-[English](#english) | [简体中文](#简体中文) | [📝 Changelog / 更新日志](CHANGELOG.md)
+[GitHub / 仓库地址](https://github.com/rikkartx/ElvUI_AdditionalFeature)
+
+[Changelog / 版本日志](https://github.com/rikkartx/ElvUI_AdditionalFeature/blob/master/CHANGELOG.md)
 
 ---
 
@@ -11,6 +13,8 @@ An enhancement plugin for ElvUI that adds several highly requested quality-of-li
 
 ### 🌟 Features
 
+* **Target & Focus Nameplate Color** *(New in v0.1.2!)*
+  Easily distinguish your primary targets! Customize the health bar color of your current Target and Focus. Features a strict color priority system (Target > Focus > Quest > Threat/Normal) and perfectly restores original colors when switching targets without visual bugs.
 * **Nameplate Quest Color** *(New in v0.1.1!)*
   Highlights quest mobs! Easily identify your current quest objectives by overriding their nameplate health bar with a custom color of your choice. Features smart tracking that automatically reverts the color once the objective (e.g., 10/10 killed) is completed. *(Note: To comply with Blizzard's instance API restrictions, this feature is active in the open world only).*
 * **Force Solo Threat Color**
@@ -24,12 +28,7 @@ An enhancement plugin for ElvUI that adds several highly requested quality-of-li
 
 ### 🛠️ Installation
 
-1. Download the latest version.
-2. Extract the `ElvUI_AdditionalFeature` folder.
-3. Move the folder into your `World of Warcraft\_retail_\Interface\AddOns\` directory.
-4. Make sure ElvUI is installed and enabled.
-
-*For detailed version history and updates, please see the [CHANGELOG.md](CHANGELOG.md).*
+https://www.curseforge.com/wow/addons/elvui-additionalfeature
 
 ---
 
@@ -38,6 +37,8 @@ An enhancement plugin for ElvUI that adds several highly requested quality-of-li
 
 ### 🌟 功能特性
 
+* **目标与焦点姓名板变色** *(v0.1.2 新功能！)*
+  在乱战中一眼锁定你的目标！支持自定义当前选中目标与焦点目标的血条颜色。拥有严格的染色优先级系统（当前目标 > 焦点 > 任务怪 > 常规/仇恨染色），通过调用底层引擎，在切怪时完美无缝还原底色，彻底告别颜色残留。
 * **任务目标姓名板变色** *(v0.1.1 新功能！)*
   让任务怪无处遁形！强制覆盖属于你当前任务目标的小怪血条颜色。带有智能进度追踪功能，当你完成该怪物的击杀需求（例如 10/10）后，血条会自动恢复为原本的颜色。（*注：为规避暴雪副本内 API 限制，此功能仅在野外生效*）。
 * **强制单人仇恨颜色**
@@ -51,9 +52,4 @@ An enhancement plugin for ElvUI that adds several highly requested quality-of-li
 
 ### 🛠️ 安装方法
 
-1. 下载最新版本。
-2. 解压 `ElvUI_AdditionalFeature` 文件夹。
-3. 将文件夹移动到你的 `World of Warcraft\_retail_\Interface\AddOns\` 目录中。
-4. 确保你已安装并启用了 ElvUI 核心插件。
-
-*有关详细的版本历史和更新记录，请查看 [CHANGELOG.md](CHANGELOG.md)。*
+https://www.curseforge.com/wow/addons/elvui-additionalfeature

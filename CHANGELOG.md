@@ -1,6 +1,30 @@
+> Developed by Gemini
+
 # Changelog
 
 [English](#english) | [简体中文](#简体中文)
+
+---
+
+## [0.1.2] - Target & Focus Colors
+
+### English
+
+#### Added
+- **Target Nameplate Color**: Added a new feature to set a custom health bar color for your current target, helping you easily track your primary target in chaotic situations.
+- **Focus Nameplate Color**: Added the ability to set a custom health bar color for your focus target.
+- **Color Priority System**: Implemented a strict priority order for nameplate colors (Target > Focus > Quest > Threat/Normal).
+- **Nameplate Quest Text Alpha**: Added a new feature to modify the transparency of nameplate quest text.
+
+---
+
+### 简体中文
+
+#### 新增
+- **当前目标染色**：新增功能，可将当前选中目标的姓名板血条修改为自定义颜色，助你在混乱的战斗中一眼锁定目标。
+- **焦点目标染色**：新增功能，支持为你的焦点目标设置专属的血条颜色。
+- **色彩优先级系统**：为姓名板渲染建立了严格的优先级规则（当前目标 > 焦点 > 任务怪 > 常规/仇恨染色）。
+- **姓名板任务文本透明度**：新增功能，修改姓名板任务文本透明度
 
 ---
 

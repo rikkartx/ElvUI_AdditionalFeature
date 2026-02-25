@@ -1,6 +1,9 @@
 local E, L = unpack(ElvUI)
 if GetLocale() ~= "zhTW" then return end
 
+L["NamePlates"] = "姓名板"
+L["Auras"] = "光環"
+L["Custom Tags"] = "自定義標籤"
 L["Additional Feature"] = "AdditionalFeature"
 L["Force Solo Threat Color"] = "強制單人仇恨顏色設置"
 L["Enable Solo Threat Color"] = "啟用 Solo 仇恨顏色"
@@ -30,3 +33,16 @@ L["Quest Objective Color"] = "任務目標顏色"
 L["Color to use for quest objectives."] = "屬於任務目標的小怪的血條顏色。"
 L["Enable in Instances (may cause performance issues)"] = "副本內啟用 (可能會引起性能問題)"
 L["ENABLE_QUEST_COLOR_IN_INSTANCE_DESC"] = "開啟此項會在副本內強制每次刷新時重新掃描，可能會在多怪AOE時引起掉幀。關閉此項則在進入副本後自動禁用任務染色。"
+L["Nameplate Level Text Alpha"] = "姓名板等級文本透明度"
+L["Adjust the transparency of the nameplate level text object."] = "調整姓名板上「等級」文本控件的全局透明度。\n（注：魔獸世界原生渲染不支持透明度標籤，此功能直接作用於底層 UI 控件上）"
+-- 目標與焦點
+L["Target Nameplate Color"] = "當前目標顏色設置"
+L["Enable Target Color"] = "啟用當前目標變色"
+L["Change the nameplate health bar color for the current target."] = "開啟後，你當前選中的目標姓名板血條會變成指定的顏色。"
+L["Target Color"] = "當前目標顏色"
+L["Color to use for the current target."] = "設定你當前選中目標的血條顏色。"
+L["Focus Nameplate Color"] = "焦點目標顏色設置"
+L["Enable Focus Color"] = "啟用焦點目標變色"
+L["Change the nameplate health bar color for your focus target."] = "開啟後，你當前設為焦點的目標姓名板血條會變成指定的顏色。"
+L["Focus Color"] = "焦點目標顏色"
+L["Color to use for your focus target."] = "設定你焦點目標的血條顏色。"
