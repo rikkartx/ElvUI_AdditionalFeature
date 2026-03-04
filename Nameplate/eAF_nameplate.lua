@@ -87,8 +87,15 @@ end
 -- ==========================================
 function Mod:ApplyNameplateColorOverride(frame)
     if not frame or not frame.Health or not frame.unit then return end
-    
+
     local db = E.db.elvui_additionalfeature
+
+    -- 【优先级 0：无拾取权/无进度 (灰名怪)】
+    -- 如果目标被别人染红（Tap Denied），直接 return 放行。
+    -- ElvUI 底层已经将其染成了灰色，我们什么都不做，完美保留灰名状态。
+    if UnitIsTapDenied(frame.unit) then
+        return
+    end
 
     -- 【优先级 1：当前目标染色】
     if db.eAF_enableTargetColor and UnitIsUnit(frame.unit, "target") then
